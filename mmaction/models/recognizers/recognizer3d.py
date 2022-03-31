@@ -21,11 +21,13 @@ class Recognizer3D(BaseRecognizer):
             x, loss_aux = self.neck(x, labels.squeeze())
             losses.update(loss_aux)
 
+        # import ipdb; ipdb.set_trace()
         cls_score = self.cls_head(x)
         gt_labels = labels.squeeze()
         loss_cls = self.cls_head.loss(cls_score, gt_labels, **kwargs)
+        predicted_labels = cls_score.argmax(-1)
+        # import ipdb; ipdb.set_trace()
         losses.update(loss_cls)
-
         return losses
 
     def _do_test(self, imgs):
